@@ -10,7 +10,7 @@ const contactItems = [
   {
     icon: Phone,
     label: "Phone",
-    lines: ["+1 (555) 000-0000", "+1 (555) 000-0001"],
+    lines: ["+91 88388 59742"],
   },
   {
     icon: Mail,
@@ -97,7 +97,7 @@ export default function Contact() {
               fabrication project.
             </p>
             <a
-              href="tel:+15550000000"
+              href="tel:+918838859742"
               data-ocid="contact.primary_button"
               className="inline-flex items-center gap-2 bg-primary-foreground text-primary font-display font-700 uppercase tracking-widest px-8 py-3 text-sm hover:bg-primary-foreground/90 transition-colors"
             >

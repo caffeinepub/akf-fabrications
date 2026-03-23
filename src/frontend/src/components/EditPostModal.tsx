@@ -8,7 +8,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
-import { ImagePlus, Loader2, Upload, X } from "lucide-react";
+import { ImagePlus, Loader2, Upload, Video, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { ExternalBlob, MediaType } from "../backend";
@@ -37,7 +37,8 @@ export default function EditPostModal({
   const [caption, setCaption] = useState(post.caption);
   const [files, setFiles] = useState<FilePreview[]>([]);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
   const updatePost = useUpdatePost();
 
   useEffect(() => {
@@ -148,22 +149,41 @@ export default function EditPostModal({
 
           <div>
             <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1.5 block">
-              Media
+              Add More Media
             </Label>
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              data-ocid="edit.upload_button"
-              className="w-full border-2 border-dashed border-border hover:border-primary/50 transition-colors p-4 flex items-center justify-center gap-2 text-muted-foreground hover:text-primary"
-            >
-              <ImagePlus className="w-5 h-5" />
-              <span className="text-sm">Add more media</span>
-            </button>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => imageInputRef.current?.click()}
+                data-ocid="edit.upload_button"
+                className="border-2 border-dashed border-border hover:border-primary/50 transition-colors p-4 flex flex-col items-center gap-2 text-muted-foreground hover:text-primary"
+              >
+                <ImagePlus className="w-6 h-6" />
+                <span className="text-sm">Add Images</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => videoInputRef.current?.click()}
+                data-ocid="edit.upload_button"
+                className="border-2 border-dashed border-border hover:border-primary/50 transition-colors p-4 flex flex-col items-center gap-2 text-muted-foreground hover:text-primary"
+              >
+                <Video className="w-6 h-6" />
+                <span className="text-sm">Add Videos</span>
+              </button>
+            </div>
             <input
-              ref={fileInputRef}
+              ref={imageInputRef}
               type="file"
               multiple
-              accept="image/*,video/*"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => handleFiles(e.target.files)}
+            />
+            <input
+              ref={videoInputRef}
+              type="file"
+              multiple
+              accept="video/*"
               className="hidden"
               onChange={(e) => handleFiles(e.target.files)}
             />
@@ -188,6 +208,11 @@ export default function EditPostModal({
                       alt=""
                       className="w-full h-full object-cover"
                     />
+                  )}
+                  {fp.type === "video" && (
+                    <span className="absolute bottom-1 left-1 bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider">
+                      VIDEO
+                    </span>
                   )}
                   <button
                     type="button"
